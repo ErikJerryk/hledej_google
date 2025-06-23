@@ -56,5 +56,9 @@ def vyhledat():
 
     return send_file(filename, as_attachment=True)
 
+@app.route("/")
+def home():
+    return "Aplikace běží"
+
 if __name__ == "__main__":
     app.run(debug=True)
