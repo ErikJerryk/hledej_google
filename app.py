@@ -1,5 +1,3 @@
-
-
 from flask import Flask, request, send_file
 import requests
 from bs4 import BeautifulSoup
@@ -31,8 +29,15 @@ def extrahuj_vysledky(dotaz):
             })
     return vysledky
 
-@app.route("/vyhledat", methods=["POST"])
+@app.route("/")
+def home():
+    return "Aplikace běží"
+
+@app.route("/vyhledat", methods=["GET", "POST"])
 def vyhledat():
+    if request.method == "GET":
+        return "Tato adresa slouží pouze pro odeslání formuláře (POST)."
+
     dotaz = request.form["dotaz"]
     format = request.form["format"]
     vysledky = extrahuj_vysledky(dotaz)
@@ -46,7 +51,7 @@ def vyhledat():
         for radek in vysledky:
             ws.append([radek["titulek"], radek["url"]])
         wb.save(filename)
-    else:  # CSV jako výchozí
+    else:
         filename = f"vysledky_{timestamp}.csv"
         with open(filename, "w", newline='', encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=["titulek", "url"])
@@ -55,15 +60,6 @@ def vyhledat():
                 writer.writerow(radek)
 
     return send_file(filename, as_attachment=True)
-
-@app.route("/")
-def home():
-    return "Aplikace běží"
-
-@app.route("/vyhledat", methods=["GET", "POST"])
-def vyhledat():
-    if request.method == "GET":
-        return "Tato adresa slouží pouze pro odeslání formuláře (POST)."
 
 if __name__ == "__main__":
     app.run(debug=True)
