@@ -60,5 +60,10 @@ def vyhledat():
 def home():
     return "Aplikace běží"
 
+@app.route("/vyhledat", methods=["GET", "POST"])
+def vyhledat():
+    if request.method == "GET":
+        return "Tato adresa slouží pouze pro odeslání formuláře (POST)."
+
 if __name__ == "__main__":
     app.run(debug=True)
