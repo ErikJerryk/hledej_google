@@ -1,4 +1,4 @@
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, render_template
 import requests
 from bs4 import BeautifulSoup
 import csv
@@ -31,7 +31,7 @@ def extrahuj_vysledky(dotaz):
 
 @app.route("/")
 def home():
-    return "Aplikace běží"
+    return render_template("formular.html")
 
 @app.route("/vyhledat", methods=["GET", "POST"])
 def vyhledat():
