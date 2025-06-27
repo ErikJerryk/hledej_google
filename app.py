@@ -9,7 +9,7 @@ from openpyxl import Workbook
 app = Flask(__name__)
 
 HEADERS = {
-    "User-Agent": "Mozilla/5.0"
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
 }
 
 def extrahuj_vysledky(dotaz):
@@ -19,7 +19,7 @@ def extrahuj_vysledky(dotaz):
     soup = BeautifulSoup(response.text, "html.parser")
 
     vysledky = []
-    for item in soup.select('div.g'):
+    for item in soup.select('div.tF2Cxc'):
         nadpis = item.select_one('h3')
         odkaz = item.select_one('a')
         if nadpis and odkaz:
