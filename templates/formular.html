@@ -1,1 +1,42 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css.css') }}">
+    <title>Google Výsledky - Export</title>
+</head>
 
+<body>
+    <header>
+        <h1>Export výsledků z Googlu</h1>
+    </header>
+   
+        <article>
+            <section>
+                <form action="/vyhledat" method="POST">
+                
+                    <p><label for="dotaz"><strong>Zadej klíčové slovo nebo frázi:</strong></label></p>
+                    <p><input type="text" name="dotaz" id="dotaz" required></p>
+                        
+                    
+                    <p><label for="format"><strong>Zvol formát exportu:</strong></label></p>
+                        
+                    <p>
+                        <select name="format" id="format">
+                        <option value="csv">CSV</option>
+                        <option value="excel">Excel (.xlsx)</option>
+                        </select>
+                    </p>
+                        
+                    <p><button type="submit"><strong>Vyhledat a exportovat</strong></button></p>
+            </section>
+        </article>
+    </form>
+
+    <footer>
+        Vytvořil &copy;ErJe 2025
+    </footer>
+    
+
+</body>
+</html>
