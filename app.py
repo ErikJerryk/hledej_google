@@ -12,11 +12,14 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
 }
 
-def extrahuj_vysledky(dotaz):
-    query = dotaz.replace(" ", "+")
-    url = f"https://www.google.com/search?q={query}&hl=cs"
-    response = requests.get(url, headers=HEADERS)
-    soup = BeautifulSoup(response.text, "html.parser")
+def extrahuj_vysledky(dotaz, html=None):
+    if html is None:
+        query = dotaz.replace(" ", "+")
+        url = f"https://www.google.com/search?q={query}&hl=cs"
+        response = requests.get(url, headers=HEADERS)
+        html = response.text  # jen pokud není html předáno
+
+    soup = BeautifulSoup(html, "html.parser")
 
     vysledky = []
     for item in soup.select('div.tF2Cxc'):
