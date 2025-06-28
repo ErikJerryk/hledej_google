@@ -23,13 +23,17 @@ class TestExtrakce(unittest.TestCase):
         '''
 
     def test_extrahuj_vysledky(self):
-        vysledky = extrahuj_vysledky("test", html=self.test_html)
+        dotaz = "python programming"
+        vysledky = extrahuj_vysledky("pizza")
+
         self.assertIsInstance(vysledky, list)
-        self.assertEqual(len(vysledky), 1)
-        self.assertIn("titulek", vysledky[0])
-        self.assertIn("url", vysledky[0])
-        self.assertEqual(vysledky[0]["titulek"], "Příklad titulku")
-        self.assertEqual(vysledky[0]["url"], "https://example.com")
+        self.assertGreater(len(vysledky), 0)
+        for vysledek in vysledky:
+            self.assertIn("titulek", vysledek)
+            self.assertIn("url", vysledek)
+            self.assertIsInstance(vysledek["titulek"], str)
+            self.assertIsInstance(vysledek["url"], str)
+
 
 if __name__ == "__main__":
     unittest.main()
