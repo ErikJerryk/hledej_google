@@ -12,6 +12,8 @@ app = Flask(__name__)
 
 def extrahuj_vysledky(dotaz):
     api_key = os.getenv("SERPAPI_KEY")
+    print("Načtený API klíč:", api_key)
+
     params = {
         "engine": "google",
         "q": dotaz,
@@ -20,6 +22,7 @@ def extrahuj_vysledky(dotaz):
     }
     response = requests.get("https://serpapi.com/search", params=params)
     data = response.json()
+    print("Odpověď SerpAPI:", data)
 
     vysledky = []
     for result in data.get("organic_results", []):
@@ -29,6 +32,7 @@ def extrahuj_vysledky(dotaz):
         })
 
     return vysledky
+
 
 @app.route("/")
 def home():
