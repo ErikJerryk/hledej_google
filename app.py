@@ -1,35 +1,33 @@
 from flask import Flask, request, send_file, render_template
 import requests
-from bs4 import BeautifulSoup
 import csv
 import time
 import os
 from openpyxl import Workbook
+from dotenv import load_dotenv
+
+load_dotenv()  # Načte proměnné z .env
 
 app = Flask(__name__)
 
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-}
-
-def extrahuj_vysledky(dotaz, html=None):
-    if html is None:
-        query = dotaz.replace(" ", "+")
-        url = f"https://www.google.com/search?q={query}&hl=cs"
-        response = requests.get(url, headers=HEADERS)
-        html = response.text  # jen pokud není html předáno
-
-    soup = BeautifulSoup(html, "html.parser")
+def extrahuj_vysledky(dotaz):
+    api_key = os.getenv("SERPAPI_KEY")
+    params = {
+        "engine": "google",
+        "q": dotaz,
+        "hl": "cs",
+        "api_key": api_key
+    }
+    response = requests.get("https://serpapi.com/search", params=params)
+    data = response.json()
 
     vysledky = []
-    for item in soup.select('div.tF2Cxc'):
-        nadpis = item.select_one('h3')
-        odkaz = item.select_one('a')
-        if nadpis and odkaz:
-            vysledky.append({
-                "titulek": nadpis.text.strip(),
-                "url": odkaz['href']
-            })
+    for result in data.get("organic_results", []):
+        vysledky.append({
+            "titulek": result.get("title", ""),
+            "url": result.get("link", "")
+        })
+
     return vysledky
 
 @app.route("/")
